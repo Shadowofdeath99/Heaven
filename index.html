@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تحدي هيلين الذكي 🧠✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: manipulation; }
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #EDE9FE 0%, #FCE7F3 50%, #E0F2FE 100%); }
+        .magic-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-cloud { position: absolute; opacity: 0.5; animation: floatCloud 24s infinite ease-in-out alternate; }
+        @keyframes floatCloud { 0% { transform: translateX(-30px); } 100% { transform: translateX(40px) translateY(-18px); } }
+        .kid-btn { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(139, 92, 246, 0.15); }
+        .kid-btn:active { transform: translateY(3px) scale(0.97); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12); }
+        .kid-btn:disabled { opacity: 0.4; box-shadow: none; }
+        @keyframes pulseGlow { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4)); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.7)); } }
+        .princess-avatar { animation: pulseGlow 3s infinite ease-in-out; }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        .float-card { animation: floatSlow 4s infinite ease-in-out; }
+        @keyframes gentleShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px) rotate(-2deg); } 75% { transform: translateX(8px) rotate(2deg); } }
+        .shake-gentle { animation: gentleShake 0.45s ease-in-out; }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .pop-in { animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes recordingPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 50% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); } }
+        .recording-active { animation: recordingPulse 1.2s infinite; }
+        .game-card { flex: 0 0 auto; width: calc(50% - 0.5rem); max-width: 200px; min-height: 155px; }
+        @media (min-width: 640px) { .game-card { width: 175px; min-height: 175px; } }
+        @media (min-width: 1024px) { .game-card { width: 180px; min-height: 185px; } }
+        .pad { transition: transform 0.15s, filter 0.15s; cursor: pointer; }
+        .pad-active { transform: scale(1.08); filter: brightness(1.6); box-shadow: 0 0 25px currentColor; }
+        .letter-tile { user-select: none; }
+        @keyframes seqFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .seq-fade { animation: seqFadeIn 0.3s ease-out; }
+        .slot { transition: all 0.3s; }
+        .slot-filled { background: linear-gradient(135deg, #86efac, #22c55e); color: white; border-color: #16a34a; }
+    </style>
+</head>
+<body class="relative flex flex-col justify-between h-full w-full overflow-hidden">
+
+    <div class="magic-bg">
+        <svg class="floating-cloud top-8 right-8 w-36 h-24 text-white" viewBox="0 0 120 80" fill="currentColor"><path d="M35 65h55c14 0 25-11 25-25 0-12-9-23-21-24C89 6 77 0 64 0 47 0 33 12 30 28 16 29 5 40 5 54c0 6 5 11 30 11z"/></svg>
+        <svg class="floating-cloud top-24 left-10 w-44 h-28 text-white" style="animation-delay:-8s" viewBox="0 0 120 80" fill="currentColor"><path d="M35 65h55c14 0 25-11 25-25 0-12-9-23-21-24C89 6 77 0 64 0 47 0 33 12 30 28 16 29 5 40 5 54c0 6 5 11 30 11z"/></svg>
+    </div>
+
+    <canvas id="fxCanvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
+
+    <header class="relative z-20 flex items-center justify-between px-3 sm:px-5 py-2 bg-white/85 backdrop-blur-md border-b-4 border-purple-200 shadow-sm">
+        <div class="flex items-center gap-2 sm:gap-3">
+            <button id="princessBtn" onclick="speak('welcome')" class="princess-avatar relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-pink-400 via-purple-400 to-sky-300 p-1 shadow-lg flex items-center justify-center cursor-pointer active:scale-90 transition">
+                <div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+                    <svg class="w-10 h-10 sm:w-12 sm:h-12" viewBox="0 0 100 100">
+                        <path d="M22 55 C20 28, 80 28, 78 55 C82 70, 75 85, 68 85 C65 75, 35 75, 32 85 C25 85, 18 70, 22 55 Z" fill="#3B2818"/>
+                        <circle cx="50" cy="54" r="22" fill="#FFE5D9"/>
+                        <circle cx="37" cy="58" r="4" fill="#FF8FA3" opacity="0.6"/>
+                        <circle cx="63" cy="58" r="4" fill="#FF8FA3" opacity="0.6"/>
+                        <path d="M38 50 Q41 46 44 50" stroke="#3B2818" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M56 50 Q59 46 62 50" stroke="#3B2818" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M44 61 Q50 66 56 61" stroke="#E11D48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M32 34 L38 20 L50 30 L62 20 L68 34 Z" fill="#FBBF24" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round"/>
+                        <circle cx="50" cy="27" r="2.5" fill="#EC4899"/>
+                    </svg>
+                </div>
+                <span class="absolute -bottom-1 -left-1 bg-amber-400 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow">🔊</span>
+            </button>
+            <div>
+                <h1 class="text-base sm:text-xl font-black bg-gradient-to-l from-pink-600 via-purple-600 to-sky-600 bg-clip-text text-transparent leading-tight">تحدي هيلين الذكي ✨</h1>
+                <p id="subtitleSpeech" class="text-[10px] sm:text-xs font-bold text-purple-600 truncate max-w-[160px] sm:max-w-md">أهلاً يا هيلين! جاهزة للتحدي؟ 💪</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+            <div onclick="celebrateStars()" class="cursor-pointer flex items-center gap-1 bg-gradient-to-r from-amber-100 to-yellow-200 border-2 border-amber-400 px-2.5 py-1 rounded-full shadow-sm active:scale-95 transition">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span id="starCountDisplay" class="text-base sm:text-lg font-black text-amber-800">0</span>
+            </div>
+            <button id="homeBtn" onclick="goHome()" class="hidden kid-btn bg-gradient-to-b from-pink-400 to-rose-500 text-white p-2 rounded-xl font-extrabold flex items-center gap-1 border-2 border-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            </button>
+            <button id="muteBtn" onclick="toggleAudioMute()" class="bg-purple-100 hover:bg-purple-200 text-purple-700 p-2 rounded-xl border-2 border-purple-300 transition active:scale-90">
+                <span id="muteIcon" class="text-base sm:text-lg">🔔</span>
+            </button>
+            <button onclick="openWizard()" class="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-2.5 py-2 rounded-xl border-2 border-white text-[11px] sm:text-xs font-bold flex items-center gap-1 active:scale-95 shadow-lg">
+                <span>🎙️</span>
+                <span class="hidden sm:inline">صوتي</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-1 w-full max-w-6xl mx-auto p-2 sm:p-4 flex flex-col items-center justify-center overflow-hidden">
+
+        <!-- LOBBY -->
+        <section id="lobbyScreen" class="w-full h-full flex flex-col justify-center items-center gap-3">
+            <div class="bg-white/90 backdrop-blur-md border-4 border-purple-300 rounded-3xl px-4 py-2.5 shadow-md flex items-center gap-3 max-w-3xl w-full justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-3xl sm:text-4xl animate-bounce">🧠</span>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-black text-purple-800">8 ألعاب ذكاء - 3 مستويات لكل لعبة!</h2>
+                        <p class="text-[10px] sm:text-xs text-pink-600 font-bold">اختاري لعبة وابدأي التحدي</p>
+                    </div>
+                </div>
+                <button onclick="speak('welcome')" class="kid-btn bg-gradient-to-r from-pink-500 to-purple-500 text-white px-3 py-1.5 rounded-2xl font-bold text-xs shrink-0">كلميني 🪽</button>
+            </div>
+
+            <div class="flex flex-wrap justify-center items-stretch gap-2.5 sm:gap-3 w-full flex-1 overflow-y-auto py-1">
+                <button onclick="startGame(1)" class="game-card kid-btn float-card bg-gradient-to-b from-pink-100 to-white border-4 border-pink-400 rounded-3xl p-2 flex flex-col items-center justify-between text-center">
+                    <div class="flex-1 flex items-center justify-center text-4xl sm:text-5xl">🧮</div>
+                    <div class="w-full bg-pink-500 text-white py-1 px-2 rounded-xl font-black text-xs sm:text-sm">١. تحدي الحساب</div>
+                </button>
+                <button onclick="startGame(2)" style="animation-delay:-1s" class="game-card kid-btn float-card bg-gradient-to-b from-purple-100 to-white border-4 border-purple-400 rounded-3xl p-2 flex flex-col items-center justify-between text-center">
+                    <div class="flex-1 flex items-center justify-center text-4xl sm:text-5xl">🔢</div>
+                    <div class="w-full bg-purple-500 text-white py-1 px-2 rounded-xl font-black text-xs sm:text-sm">٢. تسلسل الأرقام</div>
+                </button>
+                <button onclick="startGame(3)" style="animation-delay:-2s" class="game-card kid-btn float-card bg-gradient-to-b from-sky-100 to-white border-4 border-sky-400 rounded-3xl p-2 flex flex-col items-center justify-between text-center">
+                    <div class="flex-1 flex items-center justify-center text-4xl sm:text-5xl">🎵</div>
+                    <div class="w-full bg-sky-500 text-white py-1 px-2 rounded-xl font-black text-xs sm:text-sm">٣. ذاكرة الألوان</div>
+                </button>
+                <button onclick="startGame(4)" style="animation-delay:-3s" class="game-card kid-btn float-card bg-gradient-to-b from-emerald-100 to-white border-4 border-emerald-400 rounded-3xl p-2 flex flex-col items-center justify-between text-center">
+                    <div class="flex-1 flex items-center justify-center text-4xl sm:text-5xl">🧩</div>
+                    <div class="w-full bg-emerald-500 text-white py-1 px-2 rounded-xl font-black text-xs sm:text-sm">٤. العدد المفقود</div>
+                </button>
+                <button onclick="startGame(5)" style="animation-delay:-0.5s" class="game-card kid-btn float-card bg-gradient-to-b from-amber-100 to-white border-4 border-amber-400 rounded-3xl p-2 flex flex-col items-center justify-between text-center">
+                    <div class="flex-1 flex items-center justify-center text-4xl sm:text-5xl">🔤</div>
+                    <div class="w-full bg-amber-500 text-white py-1 px-2 rounded-xl font-black text-xs sm:text-sm">٥. كلمات مبعثرة</div>
+                </button>
+                <button onclick="startGame(6)" style="animation-delay:-1.5s" class="game-card kid-btn float-card bg-gradient-to-b from-rose-100 to-white border-4 border-rose-400 rounded-3xl p-2 flex flex-col items-center justify-between text-center">
+                    <div class="flex-1 flex items-center justify-center text-4xl sm:text-5xl">🎯</div>
+                    <div class="w-full bg-rose-500 text-white py-1 px-2 rounded-xl font-black text-xs sm:text-sm">٦. المختلف</div>
+                </button>
+                <button onclick="startGame(7)" style="animation-delay:-2.5s" class="game-card kid-btn float-card bg-gradient-to-b from-cyan-100 to-white border-4 border-cyan-400 rounded-3xl p-2 flex flex-col items-center justify-between text-center">
+                    <div class="flex-1 flex items-center justify-center text-4xl sm:text-5xl">💡</div>
+                    <div class="w-full bg-cyan-500 text-white py-1 px-2 rounded-xl font-black text-xs sm:text-sm">٧. ألغاز ذكية</div>
+                </button>
+                <button onclick="startGame(8)" style="animation-delay:-3.5s" class="game-card kid-btn float-card bg-gradient-to-b from-indigo-100 to-white border-4 border-indigo-400 rounded-3xl p-2 flex flex-col items-center justify-between text-center">
+                    <div class="flex-1 flex items-center justify-center text-4xl sm:text-5xl">⚖️</div>
+                    <div class="w-full bg-indigo-500 text-white py-1 px-2 rounded-xl font-black text-xs sm:text-sm">٨. المعادلة الناقصة</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- GAME 1: MATH -->
+        <section id="game1Screen" class="hidden w-full h-full flex flex-col gap-2">
+            <div class="flex items-center justify-between w-full bg-white/90 px-3 py-2 rounded-2xl border-2 border-pink-300 shadow-sm">
+                <h3 class="text-xs sm:text-base font-black text-pink-600">🧮 كام الناتج؟</h3>
+                <div class="flex items-center gap-1.5">
+                    <span id="mathProgress" class="text-xs font-bold text-purple-700 bg-purple-100 px-2 py-1 rounded-lg">0/10</span>
+                    <button onclick="startMathGame(1)" class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-lg font-bold text-xs border border-emerald-300">سهل</button>
+                    <button onclick="startMathGame(2)" class="bg-amber-100 text-amber-700 px-2 py-1 rounded-lg font-bold text-xs border border-amber-300">متوسط</button>
+                    <button onclick="startMathGame(3)" class="bg-rose-100 text-rose-700 px-2 py-1 rounded-lg font-bold text-xs border border-rose-300">صعب</button>
+                </div>
+            </div>
+            <div class="w-full flex-1 bg-gradient-to-b from-pink-50 to-white rounded-3xl border-4 border-pink-400 shadow-lg p-4 flex flex-col justify-center items-center gap-4">
+                <div id="mathQuestion" class="text-4xl sm:text-6xl font-black text-purple-800 seq-fade text-center"></div>
+                <div id="mathChoices" class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md"></div>
+            </div>
+        </section>
+
+        <!-- GAME 2: SEQUENCES -->
+        <section id="game2Screen" class="hidden w-full h-full flex flex-col gap-2">
+            <div class="flex items-center justify-between w-full bg-white/90 px-3 py-2 rounded-2xl border-2 border-purple-300 shadow-sm">
+                <h3 class="text-xs sm:text-base font-black text-purple-700">🔢 كملي التسلسل</h3>
+                <div class="flex items-center gap-1.5">
+                    <span id="seqProgress" class="text-xs font-bold text-purple-700 bg-purple-100 px-2 py-1 rounded-lg">0/6</span>
+                    <button onclick="startSeqGame(1)" class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-lg font-bold text-xs border border-emerald-300">سهل</button>
+                    <button onclick="startSeqGame(2)" class="bg-amber-100 text-amber-700 px-2 py-1 rounded-lg font-bold text-xs border border-amber-300">متوسط</button>
+                    <button onclick="startSeqGame(3)" class="bg-rose-100 text-rose-700 px-2 py-1 rounded-lg font-bold text-xs border border-rose-300">صعب</button>
+                </div>
+            </div>
+            <div class="w-full flex-1 bg-gradient-to-b from-purple-50 to-white rounded-3xl border-4 border-purple-400 shadow-lg p-4 flex flex-col justify-center items-center gap-4">
+                <div id="seqDisplay" class="flex flex-wrap justify-center items-center gap-2 sm:gap-3"></div>
+                <div id="seqChoices" class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md mt-2"></div>
+            </div>
+        </section>
+
+        <!-- GAME 3: SIMON -->
+        <section id="game3Screen" class="hidden w-full h-full flex flex-col gap-2">
+            <div class="flex items-center justify-between w-full bg-white/90 px-3 py-2 rounded-2xl border-2 border-sky-300 shadow-sm">
+                <h3 class="text-xs sm:text-base font-black text-sky-700">🎵 ذاكرة الألوان - كرري التسلسل!</h3>
+                <button onclick="startSimonGame()" class="bg-sky-100 text-sky-700 px-2.5 py-1 rounded-lg font-bold text-xs border border-sky-300">🔄 إعادة</button>
+            </div>
+            <div class="w-full flex-1 bg-gradient-to-b from-sky-50 to-white rounded-3xl border-4 border-sky-400 shadow-lg p-3 flex flex-col justify-center items-center gap-3">
+                <p id="simonStatus" class="text-sm sm:text-lg font-black text-purple-700 text-center px-3 py-1.5 bg-white/80 rounded-xl">استعدي...</p>
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-sm">
+                    <button data-pad="0" onclick="handlePadClick(0)" class="pad rounded-2xl h-24 sm:h-32 bg-gradient-to-br from-rose-400 to-rose-600 border-4 border-white shadow-lg text-white"></button>
+                    <button data-pad="1" onclick="handlePadClick(1)" class="pad rounded-2xl h-24 sm:h-32 bg-gradient-to-br from-sky-400 to-sky-600 border-4 border-white shadow-lg text-white"></button>
+                    <button data-pad="2" onclick="handlePadClick(2)" class="pad rounded-2xl h-24 sm:h-32 bg-gradient-to-br from-emerald-400 to-emerald-600 border-4 border-white shadow-lg text-white"></button>
+                    <button data-pad="3" onclick="handlePadClick(3)" class="pad rounded-2xl h-24 sm:h-32 bg-gradient-to-br from-amber-400 to-amber-600 border-4 border-white shadow-lg text-white"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME 4: MISSING NUMBER -->
+        <section id="game4Screen" class="hidden w-full h-full flex flex-col gap-2">
+            <div class="flex items-center justify-between w-full bg-white/90 px-3 py-2 rounded-2xl border-2 border-emerald-300 shadow-sm">
+                <h3 class="text-xs sm:text-base font-black text-emerald-700">🧩 العدد المفقود</h3>
+                <div class="flex items-center gap-1.5">
+                    <span id="missProgress" class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-1 rounded-lg">0/5</span>
+                    <button onclick="startMissingGame(1)" class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-lg font-bold text-xs border border-emerald-300">سهل</button>
+                    <button onclick="startMissingGame(2)" class="bg-amber-100 text-amber-700 px-2 py-1 rounded-lg font-bold text-xs border border-amber-300">متوسط</button>
+                    <button onclick="startMissingGame(3)" class="bg-rose-100 text-rose-700 px-2 py-1 rounded-lg font-bold text-xs border border-rose-300">صعب</button>
+                </div>
+            </div>
+            <div class="w-full flex-1 bg-gradient-to-b from-emerald-50 to-white rounded-3xl border-4 border-emerald-400 shadow-lg p-3 flex flex-col justify-around items-center gap-3">
+                <p class="text-sm font-black text-purple-800 text-center">أكملي المربع الذكي 👇</p>
+                <div id="missingGrid" class="grid grid-cols-3 gap-2 sm:gap-3 p-2 bg-white rounded-2xl shadow-lg"></div>
+                <div id="missChoices" class="grid grid-cols-4 gap-2 sm:gap-3 w-full max-w-md"></div>
+            </div>
+        </section>
+
+        <!-- GAME 5: WORD SCRAMBLE -->
+        <section id="game5Screen" class="hidden w-full h-full flex flex-col gap-2">
+            <div class="flex items-center justify-between w-full bg-white/90 px-3 py-2 rounded-2xl border-2 border-amber-300 shadow-sm">
+                <h3 class="text-xs sm:text-base font-black text-amber-700">🔤 رتبي الحروف!</h3>
+                <div class="flex items-center gap-1.5">
+                    <span id="wordProgress" class="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-1 rounded-lg">0/5</span>
+                    <button onclick="startWordGame(1)" class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-lg font-bold text-xs border border-emerald-300">سهل</button>
+                    <button onclick="startWordGame(2)" class="bg-amber-100 text-amber-700 px-2 py-1 rounded-lg font-bold text-xs border border-amber-300">متوسط</button>
+                    <button onclick="startWordGame(3)" class="bg-rose-100 text-rose-700 px-2 py-1 rounded-lg font-bold text-xs border border-rose-300">صعب</button>
+                </div>
+            </div>
+            <div class="w-full flex-1 bg-gradient-to-b from-amber-50 to-white rounded-3xl border-4 border-amber-400 shadow-lg p-3 flex flex-col justify-around items-center gap-3">
+                <p class="text-sm font-black text-purple-800">اضغطي الحروف بالترتيب الصح 👇</p>
+                <div id="wordAnswerSlots" class="flex flex-wrap justify-center gap-2 min-h-[60px] bg-white/60 rounded-2xl p-2 w-full max-w-md border-2 border-dashed border-amber-300"></div>
+                <div id="wordLetterTiles" class="flex flex-wrap justify-center gap-2 max-w-md"></div>
+                <div class="flex gap-2">
+                    <button onclick="clearWordAnswer()" class="kid-btn bg-slate-200 text-slate-700 px-4 py-2 rounded-xl font-bold text-sm">↺ مسح</button>
+                    <button onclick="checkWordAnswer()" class="kid-btn bg-gradient-to-r from-emerald-500 to-green-500 text-white px-6 py-2 rounded-xl font-bold text-sm">✓ تحقق</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME 6: ODD ONE OUT -->
+        <section id="game6Screen" class="hidden w-full h-full flex flex-col gap-2">
+            <div class="flex items-center justify-between w-full bg-white/90 px-3 py-2 rounded-2xl border-2 border-rose-300 shadow-sm">
+                <h3 class="text-xs sm:text-base font-black text-rose-700">🎯 مين المختلف؟</h3>
+                <div class="flex items-center gap-1.5">
+                    <span id="oddProgress" class="text-xs font-bold text-rose-700 bg-rose-100 px-2 py-1 rounded-lg">0/6</span>
+                    <button onclick="startOddGame(1)" class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-lg font-bold text-xs border border-emerald-300">سهل</button>
+                    <button onclick="startOddGame(2)" class="bg-amber-100 text-amber-700 px-2 py-1 rounded-lg font-bold text-xs border border-amber-300">متوسط</button>
+                    <button onclick="startOddGame(3)" class="bg-rose-100 text-rose-700 px-2 py-1 rounded-lg font-bold text-xs border border-rose-300">صعب</button>
+                </div>
+            </div>
+            <div class="w-full flex-1 bg-gradient-to-b from-rose-50 to-white rounded-3xl border-4 border-rose-400 shadow-lg p-3 flex flex-col justify-around items-center gap-3">
+                <p id="oddPrompt" class="text-sm font-black text-purple-800 text-center px-2">اضغطي على الشيء المختلف</p>
+                <div id="oddGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 w-full max-w-md place-items-center"></div>
+            </div>
+        </section>
+
+        <!-- GAME 7: RIDDLES -->
+        <section id="game7Screen" class="hidden w-full h-full flex flex-col gap-2">
+            <div class="flex items-center justify-between w-full bg-white/90 px-3 py-2 rounded-2xl border-2 border-cyan-300 shadow-sm">
+                <h3 class="text-xs sm:text-base font-black text-cyan-700">💡 لغز ذكي</h3>
+                <span id="riddleProgress" class="text-xs font-bold text-cyan-700 bg-cyan-100 px-2 py-1 rounded-lg">0/5</span>
+            </div>
+            <div class="w-full flex-1 bg-gradient-to-b from-cyan-50 to-white rounded-3xl border-4 border-cyan-400 shadow-lg p-3 flex flex-col justify-around items-center gap-3">
+                <div class="text-4xl">🤔</div>
+                <p id="riddleText" class="text-base sm:text-xl font-black text-purple-800 text-center px-3 leading-relaxed bg-white/70 rounded-2xl py-3 border-2 border-cyan-200 w-full max-w-lg"></p>
+                <div id="riddleChoices" class="grid grid-cols-2 gap-2 sm:gap-3 w-full max-w-md"></div>
+            </div>
+        </section>
+
+        <!-- GAME 8: EQUATION -->
+        <section id="game8Screen" class="hidden w-full h-full flex flex-col gap-2">
+            <div class="flex items-center justify-between w-full bg-white/90 px-3 py-2 rounded-2xl border-2 border-indigo-300 shadow-sm">
+                <h3 class="text-xs sm:text-base font-black text-indigo-700">⚖️ المعادلة الناقصة</h3>
+                <div class="flex items-center gap-1.5">
+                    <span id="eqProgress" class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2 py-1 rounded-lg">0/6</span>
+                    <button onclick="startEqGame(1)" class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-lg font-bold text-xs border border-emerald-300">سهل</button>
+                    <button onclick="startEqGame(2)" class="bg-amber-100 text-amber-700 px-2 py-1 rounded-lg font-bold text-xs border border-amber-300">متوسط</button>
+                    <button onclick="startEqGame(3)" class="bg-rose-100 text-rose-700 px-2 py-1 rounded-lg font-bold text-xs border border-rose-300">صعب</button>
+                </div>
+            </div>
+            <div class="w-full flex-1 bg-gradient-to-b from-indigo-50 to-white rounded-3xl border-4 border-indigo-400 shadow-lg p-3 flex flex-col justify-around items-center gap-3">
+                <p class="text-sm font-black text-purple-800 text-center">اختاري العلامة اللي تخلي المعادلة صح 👇</p>
+                <div id="eqDisplay" class="text-3xl sm:text-5xl font-black text-indigo-800 seq-fade" dir="ltr"></div>
+                <div id="eqChoices" class="grid grid-cols-4 gap-2 sm:gap-3 w-full max-w-md"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- WIN MODAL -->
+    <div id="winModal" class="hidden fixed inset-0 z-40 bg-purple-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white border-8 border-amber-300 rounded-[2.5rem] p-5 sm:p-7 max-w-md w-full text-center shadow-2xl flex flex-col items-center gap-3 animate-bounce">
+            <div class="text-5xl sm:text-6xl">🏆🌟🧠</div>
+            <h2 class="text-xl sm:text-2xl font-black text-pink-600">برافو يا هيلين!</h2>
+            <p id="winSubtitle" class="text-sm sm:text-base font-bold text-purple-700">عقل ذكي ما شاء الله!</p>
+            <button onclick="continueAfterWin()" class="kid-btn w-full py-3 sm:py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-sky-500 text-white text-base sm:text-lg font-black rounded-2xl border-4 border-white shadow-xl">كملي التحدي 🚀</button>
+        </div>
+    </div>
+
+    <!-- RECORDING WIZARD -->
+    <div id="recordWizard" class="hidden fixed inset-0 z-[70] bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-rose-900/95 backdrop-blur-md flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white rounded-3xl w-full max-w-2xl max-h-[96vh] flex flex-col overflow-hidden shadow-2xl">
+            <div id="wizIntro" class="flex flex-col items-center justify-center p-6 gap-3 overflow-y-auto">
+                <div class="text-5xl">🎙️</div>
+                <h2 class="text-lg sm:text-xl font-black text-purple-800 text-center">سجلي صوتك للتشجيع</h2>
+                <p class="text-center text-slate-600 text-xs max-w-lg leading-relaxed">
+                    هيظهر لك جملة، اضغطي "🎙️ ابدئي التسجيل"، اقريها، وقفي، اسمعيها، واحفظي. وهكذا.
+                </p>
+                <div class="w-full bg-purple-50 border-2 border-purple-200 rounded-2xl p-3 space-y-2">
+                    <label class="text-xs font-bold text-purple-700 block">🎤 الصوت الافتراضي:</label>
+                    <select id="voiceSelect" class="w-full p-2 rounded-xl border border-purple-300 bg-white text-xs font-bold"></select>
+                    <div class="flex items-center gap-2 text-xs">
+                        <label class="shrink-0 font-bold">النبرة:</label>
+                        <input id="pitchSlider" type="range" min="0.8" max="1.5" step="0.05" value="1.1" oninput="voicePitch=parseFloat(this.value); document.getElementById('pitchVal').textContent=this.value" class="flex-1 accent-purple-500">
+                        <span id="pitchVal" class="text-purple-700 font-bold">1.1</span>
+                    </div>
+                </div>
+                <div id="micError" class="hidden text-red-600 bg-red-50 border-2 border-red-300 p-3 rounded-xl text-xs font-bold text-center leading-relaxed"></div>
+                <button onclick="initMicAndStart()" id="startMicBtn" class="kid-btn bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-2xl font-black text-sm w-full sm:w-auto">🎤 ابدأي التسجيل</button>
+                <div class="flex gap-3 text-[11px]">
+                    <button onclick="exportRecordings()" class="text-emerald-600 underline font-bold">💾 نسخة احتياطية</button>
+                    <button onclick="importRecordings()" class="text-sky-600 underline font-bold">📥 استرجاع</button>
+                    <button onclick="clearAllRecordings()" class="text-rose-500 underline font-bold">🗑️ حذف الكل</button>
+                </div>
+                <button onclick="closeWizard()" class="text-slate-500 underline text-xs">إغلاق</button>
+            </div>
+
+            <div id="wizMain" class="hidden flex-1 flex flex-col overflow-hidden">
+                <div class="p-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold text-purple-800">📝 جملة <span id="wizNum">1</span> / <span id="wizTotal">0</span></span>
+                        <span id="wizDone" class="text-xs font-bold text-emerald-600">0 مسجل</span>
+                    </div>
+                    <div class="h-2 bg-white rounded-full overflow-hidden border border-purple-200">
+                        <div id="wizProgress" class="h-full bg-gradient-to-r from-emerald-400 to-green-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="flex-1 p-4 flex flex-col justify-center overflow-y-auto">
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 border-4 border-dashed border-purple-300 rounded-2xl p-4 min-h-[100px] flex items-center justify-center">
+                        <p id="wizPhrase" class="text-base sm:text-lg font-black text-slate-800 text-center leading-relaxed"></p>
+                    </div>
+                    <div id="wizStatus" class="text-center mt-2 text-xs font-bold text-slate-500"></div>
+                </div>
+                <div class="p-3 bg-gradient-to-t from-slate-50 to-white border-t-2 border-slate-200 space-y-2">
+                    <div id="wizTimer" class="text-center text-xl font-black text-red-500 hidden">⏺️ 0.0 ث</div>
+                    <div class="flex gap-2">
+                        <button id="wizRecordBtn" onclick="toggleWizardRecording()" class="flex-1 kid-btn bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-2xl font-black text-sm">🎙️ ابدئي</button>
+                        <button id="wizPlayBtn" onclick="playWizardRecording()" class="kid-btn bg-gradient-to-r from-sky-500 to-blue-500 text-white py-3 px-4 rounded-2xl font-black text-base" disabled>▶️</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="wizPrev()" class="flex-1 bg-slate-200 text-slate-700 py-2 rounded-xl font-bold text-xs">← السابقة</button>
+                        <button onclick="wizSkip()" class="flex-1 bg-amber-100 text-amber-700 py-2 rounded-xl font-bold text-xs">تخطي</button>
+                        <button id="wizSaveBtn" onclick="wizSaveAndNext()" class="flex-1 bg-gradient-to-r from-emerald-500 to-green-500 text-white py-2 rounded-xl font-black text-xs hidden">✓ احفظي</button>
+                    </div>
+                    <button onclick="closeWizard()" class="w-full text-slate-400 text-[10px] py-1 hover:text-slate-600">✕ إغلاق</button>
+                </div>
+            </div>
+
+            <div id="wizDone" class="hidden flex flex-col items-center justify-center p-6 gap-3">
+                <div class="text-6xl">🎉</div>
+                <h2 class="text-xl font-black text-emerald-600">خلصتي التسجيل!</h2>
+                <p id="wizDoneMsg" class="text-center text-slate-600 text-xs max-w-md"></p>
+                <button onclick="closeWizard()" class="kid-btn bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-2xl font-black text-base">🎮 يلا نلعب!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**************************************************************
+         * PHRASES & STATE
+         **************************************************************/
+        const PHRASES = {
+            welcome: 'أهلاً يا هيلين! جاهزة نختبر ذكاءنا النهاردة؟',
+            home: 'اختاري أي تحدي يا هيلين وشوفي نفسك!',
+            win: 'برافو يا هيلين! عقل ذكي ما شاء الله!',
+            retry: 'قربتي خالص! جربي مرة تانية يا هيلين',
+            praise_1: 'إنتي عبقريية يا هيلين!',
+            praise_2: 'شاطرة يا روح قلبي!',
+            praise_3: 'ذكاء خارق يا هيلين!',
+            encourage_1: 'متقلقيش يا هيلين، جربي تاني!',
+            encourage_2: 'إنتي قدها، كملي يا هيلين!',
+            encourage_3: 'ركزي شوية يا هيلين وهتلاقيها!'
+        };
+
+        const PHRASE_GROUPS = [
+            { name: '🌟 الأساسيات', keys: ['welcome', 'home', 'win', 'retry'] },
+            { name: '💖 التشجيع', keys: ['praise_1', 'praise_2', 'praise_3'] },
+            { name: '🌱 التحفيز', keys: ['encourage_1', 'encourage_2', 'encourage_3'] }
+        ];
+
+        let starsCount = parseInt(localStorage.getItem('helen_stars_v2') || '0', 10);
+        let isMuted = false;
+        let currentGame = 0;
+        let selectedVoice = null;
+        let voicePitch = 1.1;
+        let voiceRate = 0.95;
+        let audioCache = {};
+
+        function updateStarUI() {
+            document.getElementById('starCountDisplay').textContent = starsCount;
+            localStorage.setItem('helen_stars_v2', starsCount);
+        }
+        function addStars(n = 1) { starsCount += n; updateStarUI(); }
+
+        /**************************************************************
+         * AUDIO
+         **************************************************************/
+        let audioCtx = null;
+        function getAC() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+        function playHarpNote(freq = 523.25, dur = 0.45, vol = 0.16) {
+            if (isMuted) return;
+            try {
+                const ctx = getAC();
+                const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
+                o1.type = 'sine'; o2.type = 'triangle';
+                o1.frequency.value = freq; o2.frequency.value = freq * 2;
+                g.gain.setValueAtTime(0.001, ctx.currentTime);
+                g.gain.linearRampToValueAtTime(vol, ctx.currentTime + 0.02);
+                g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+                o1.connect(g); o2.connect(g); g.connect(ctx.destination);
+                o1.start(); o2.start();
+                o1.stop(ctx.currentTime + dur); o2.stop(ctx.currentTime + dur);
+            } catch(e) {}
+        }
+        function playStepChime() { playHarpNote(523.25 + Math.random() * 500, 0.25, 0.1); }
+        function playWinFanfare() {
+            if (isMuted) return;
+            [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((n, i) =>
+                setTimeout(() => playHarpNote(n, 0.6, 0.2), i * 110));
+        }
+        function playGentleRetry() {
+            if (isMuted) return;
+            playHarpNote(392, 0.3, 0.12);
+            setTimeout(() => playHarpNote(349.23, 0.4, 0.12), 140);
+        }
+
+        function pickBestVoice() {
+            if (!('speechSynthesis' in window)) return null;
+            const voices = speechSynthesis.getVoices();
+            if (!voices.length) return null;
+            const ar = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('ar'));
+            const prio = [
+                v => v.lang.toLowerCase() === 'ar-eg' && /female|hoda|salma|sara/i.test(v.name),
+                v => v.lang.toLowerCase() === 'ar-eg',
+                v => v.lang.toLowerCase().startsWith('ar') && /female/i.test(v.name),
+                v => v.lang.toLowerCase().startsWith('ar'),
+                () => true
+            ];
+            for (const p of prio) {
+                const found = ar.find(p) || voices.find(p);
+                if (found) return found;
+            }
+            return voices[0];
+        }
+        function refreshVoiceList() {
+            if (!('speechSynthesis' in window)) return;
+            const sel = document.getElementById('voiceSelect');
+            if (!sel) return;
+            const voices = speechSynthesis.getVoices();
+            sel.innerHTML = '';
+            const ar = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('ar'));
+            const list = ar.length ? ar : voices;
+            selectedVoice = pickBestVoice();
+            list.forEach(v => {
+                const o = document.createElement('option');
+                o.value = v.name; o.textContent = `${v.name} (${v.lang})`;
+                if (selectedVoice && v.name === selectedVoice.name) o.selected = true;
+                sel.appendChild(o);
+            });
+        }
+        if ('speechSynthesis' in window) {
+            speechSynthesis.onvoiceschanged = refreshVoiceList;
+            setTimeout(refreshVoiceList, 100);
+            setTimeout(refreshVoiceList, 500);
+        }
+        document.addEventListener('change', e => {
+            if (e.target && e.target.id === 'voiceSelect') {
+                const voices = speechSynthesis.getVoices();
+                selectedVoice = voices.find(v => v.name === e.target.value) || selectedVoice;
+            }
+        });
+
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) return;
+            try {
+                speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(text);
+                if (selectedVoice) u.voice = selectedVoice;
+                u.lang = selectedVoice ? selectedVoice.lang : 'ar-EG';
+                u.pitch = voicePitch; u.rate = voiceRate;
+                speechSynthesis.speak(u);
+            } catch(e) {}
+        }
+
+        function speak(key) {
+            const text = PHRASES[key] || key;
+            const sub = document.getElementById('subtitleSpeech');
+            if (sub) sub.textContent = text;
+            if (isMuted) return;
+            if ('speechSynthesis' in window) speechSynthesis.cancel();
+            if (audioCache[key]) {
+                try {
+                    const audio = new Audio(audioCache[key]);
+                    audio.play().catch(() => speakText(text));
+                    return;
+                } catch(e) {}
+            }
+            speakText(text);
+        }
+
+        async function loadAudioCache() {
+            try {
+                const all = await dbGetAll();
+                for (const [key, blob] of Object.entries(all)) {
+                    if (blob && !audioCache[key]) audioCache[key] = URL.createObjectURL(blob);
+                }
+            } catch(e) {}
+        }
+
+        function toggleAudioMute() {
+            isMuted = !isMuted;
+            document.getElementById('muteIcon').textContent = isMuted ? '🔇' : '🔔';
+            if (isMuted && 'speechSynthesis' in window) speechSynthesis.cancel();
+            else speakText('الصوت شغال يا هيلين!');
+        }
+        function handleRetry() {
+            const keys = ['encourage_1', 'encourage_2', 'encourage_3', 'retry'];
+            speak(keys[Math.floor(Math.random() * keys.length)]);
+        }
+
+        /**************************************************************
+         * INDEXEDDB (for recordings)
+         **************************************************************/
+        const DB_NAME = 'HelenVoiceDB_v2';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'recordings';
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open(DB_NAME, DB_VERSION);
+                req.onupgradeneeded = e => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME);
+                };
+                req.onsuccess = e => resolve(e.target.result);
+                req.onerror = e => reject(e.target.error);
+            });
+        }
+        async function dbSave(key, blob) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const req = tx.objectStore(STORE_NAME).put(blob, key);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+        async function dbGetAll() {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const keysReq = store.getAllKeys();
+                keysReq.onsuccess = () => {
+                    const keys = keysReq.result;
+                    if (!keys.length) return resolve({});
+                    const valsReq = store.getAll();
+                    valsReq.onsuccess = () => {
+                        const result = {};
+                        keys.forEach((k, i) => result[k] = valsReq.result[i]);
+                        resolve(result);
+                    };
+                    valsReq.onerror = () => reject(valsReq.error);
+                };
+                keysReq.onerror = () => reject(keysReq.error);
+            });
+        }
+        async function dbClearAll() {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                tx.objectStore(STORE_NAME).clear();
+                tx.oncomplete = () => resolve();
+                tx.onerror = () => reject(tx.error);
+            });
+        }
+
+        /**************************************************************
+         * FX CANVAS
+         **************************************************************/
+        const fxCanvas = document.getElementById('fxCanvas');
+        const fxCtx = fxCanvas.getContext('2d');
+        let particles = [];
+        function resizeFx() { fxCanvas.width = window.innerWidth; fxCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeFx);
+        resizeFx();
+        function spawnSparkleBurst(x, y, n = 14) {
+            const colors = ['#FF7EB3', '#A855F7', '#38BDF8', '#FBBF24', '#34D399', '#F472B6'];
+            for (let i = 0; i < n; i++) {
+                const angle = Math.random() * Math.PI * 2, speed = 1.5 + Math.random() * 5;
+                particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 1.5,
+                    size: 4 + Math.random() * 6, color: colors[Math.floor(Math.random() * colors.length)],
+                    alpha: 1, life: 0.02 + Math.random() * 0.02 });
+            }
+        }
+        function launchConfetti() {
+            for (let i = 0; i < 55; i++) spawnSparkleBurst(Math.random() * window.innerWidth, Math.random() * (window.innerHeight * 0.5), 2);
+        }
+        function fxLoop() {
+            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.alpha -= p.life;
+                if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+                fxCtx.save();
+                fxCtx.globalAlpha = Math.max(0, p.alpha);
+                fxCtx.fillStyle = p.color;
+                fxCtx.beginPath(); fxCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2); fxCtx.fill();
+                fxCtx.restore();
+            }
+            requestAnimationFrame(fxLoop);
+        }
+        fxLoop();
+
+        /**************************************************************
+         * NAVIGATION & WIN
+         **************************************************************/
+        function startGame(n) {
+            currentGame = n;
+            document.getElementById('lobbyScreen').classList.add('hidden');
+            document.getElementById('homeBtn').classList.remove('hidden');
+            [1,2,3,4,5,6,7,8].forEach(x => document.getElementById(`game${x}Screen`).classList.toggle('hidden', x !== n));
+            playWinFanfare();
+            if (n === 1) startMathGame(1);
+            if (n === 2) startSeqGame(1);
+            if (n === 3) startSimonGame();
+            if (n === 4) startMissingGame(1);
+            if (n === 5) startWordGame(1);
+            if (n === 6) startOddGame(1);
+            if (n === 7) startRiddleGame();
+            if (n === 8) startEqGame(1);
+        }
+        function goHome() {
+            currentGame = 0;
+            document.getElementById('lobbyScreen').classList.remove('hidden');
+            document.getElementById('homeBtn').classList.add('hidden');
+            [1,2,3,4,5,6,7,8].forEach(x => document.getElementById(`game${x}Screen`).classList.add('hidden'));
+            speak('home');
+        }
+        function triggerWinCelebration(winKey) {
+            addStars(1);
+            playWinFanfare();
+            launchConfetti();
+            let phraseKey = winKey || ['praise_1','praise_2','praise_3','win'][Math.floor(Math.random()*4)];
+            document.getElementById('winSubtitle').textContent = PHRASES[phraseKey];
+            document.getElementById('winModal').classList.remove('hidden');
+            speak(phraseKey);
+        }
+        function continueAfterWin() {
+            document.getElementById('winModal').classList.add('hidden');
+            if (currentGame === 1) startMathGame(mathLevel);
+            if (currentGame === 2) startSeqGame(seqLevel);
+            if (currentGame === 3) startSimonGame();
+            if (currentGame === 4) startMissingGame(missLevel);
+            if (currentGame === 5) startWordGame(wordLevel);
+            if (currentGame === 6) startOddGame(oddLevel);
+            if (currentGame === 7) startRiddleGame();
+            if (currentGame === 8) startEqGame(eqLevel);
+        }
+        function celebrateStars() {
+            playWinFanfare();
+            launchConfetti();
+            speakText(`معاكي ${starsCount} نجمة يا هيلين! كملي!`);
+        }
+
+        /**************************************************************
+         * GAME 1: MATH
+         **************************************************************/
+        let mathLevel = 1, mathScore = 0;
+
+        function startMathGame(level) {
+            mathLevel = level; mathScore = 0;
+            document.getElementById('mathProgress').textContent = '0/10';
+            nextMathQuestion();
+        }
+        function nextMathQuestion() {
+            if (mathScore >= 10) { triggerWinCelebration('win'); return; }
+            let a, b, op, answer;
+            if (mathLevel === 1) {
+                a = 2 + Math.floor(Math.random() * 18);
+                b = 2 + Math.floor(Math.random() * 18);
+                if (Math.random() < 0.5) { op = '+'; answer = a + b; }
+                else { if (a < b) [a,b]=[b,a]; op = '−'; answer = a - b; }
+            } else if (mathLevel === 2) {
+                const t = Math.random();
+                if (t < 0.5) { a = 2 + Math.floor(Math.random()*9); b = 2 + Math.floor(Math.random()*9); op = '×'; answer = a*b; }
+                else { b = 2 + Math.floor(Math.random()*9); answer = 2 + Math.floor(Math.random()*9); a = b * answer; op = '÷'; }
+            } else {
+                const t = Math.floor(Math.random()*4);
+                if (t === 0) { a = 20 + Math.floor(Math.random()*80); b = 10 + Math.floor(Math.random()*60); op='+'; answer=a+b; }
+                else if (t === 1) { a = 30 + Math.floor(Math.random()*70); b = 10 + Math.floor(Math.random()*30); op='−'; answer=a-b; }
+                else if (t === 2) { a = 3 + Math.floor(Math.random()*10); b = 3 + Math.floor(Math.random()*10); op='×'; answer=a*b; }
+                else { b = 3 + Math.floor(Math.random()*10); answer = 3 + Math.floor(Math.random()*10); a = b*answer; op='÷'; }
+            }
+            const q = document.getElementById('mathQuestion');
+            q.textContent = `${a} ${op} ${b} = ?`;
+            q.classList.remove('seq-fade'); void q.offsetWidth; q.classList.add('seq-fade');
+            const choices = new Set([answer]);
+            while (choices.size < 4) {
+                const off = Math.floor(Math.random()*11) - 5;
+                const n = answer + off;
+                if (n !== answer && n >= 0) choices.add(n);
+            }
+            const ch = document.getElementById('mathChoices');
+            ch.innerHTML = '';
+            [...choices].sort(() => Math.random()-0.5).forEach(n => {
+                const btn = document.createElement('button');
+                btn.className = 'kid-btn w-full py-4 bg-gradient-to-b from-pink-300 to-pink-400 border-4 border-white rounded-2xl text-2xl sm:text-3xl font-black text-white shadow-lg';
+                btn.textContent = n;
+                btn.onclick = (e) => {
+                    if (n === answer) {
+                        mathScore++;
+                        document.getElementById('mathProgress').textContent = `${mathScore}/10`;
+                        spawnSparkleBurst(e.clientX, e.clientY, 12);
+                        playHarpNote(880, 0.3, 0.18);
+                        nextMathQuestion();
+                    } else {
+                        btn.classList.add('shake-gentle');
+                        setTimeout(() => btn.classList.remove('shake-gentle'), 500);
+                        playGentleRetry(); handleRetry();
+                    }
+                };
+                ch.appendChild(btn);
+            });
+        }
+
+        /**************************************************************
+         * GAME 2: SEQUENCES
+         **************************************************************/
+        let seqLevel = 1, seqScore = 0;
+
+        function startSeqGame(level) {
+            seqLevel = level; seqScore = 0;
+            document.getElementById('seqProgress').textContent = '0/6';
+            nextSeqQuestion();
+        }
+        function nextSeqQuestion() {
+            if (seqScore >= 6) { triggerWinCelebration('win'); return; }
+            let seq = [], answer;
+            if (seqLevel === 1) {
+                const start = 1 + Math.floor(Math.random()*10);
+                const step = 1 + Math.floor(Math.random()*5);
+                seq = [start, start+step, start+2*step, start+3*step];
+                answer = start + 4*step;
+            } else if (seqLevel === 2) {
+                const t = Math.random();
+                if (t < 0.5) {
+                    const start = 2 + Math.floor(Math.random()*5);
+                    const mult = 2 + Math.floor(Math.random()*2);
+                    seq = [start, start*mult, start*mult*mult, start*mult*mult*mult];
+                    answer = start * Math.pow(mult, 4);
+                } else {
+                    seq = [1, 4, 9, 16]; answer = 25;
+                    const shift = Math.floor(Math.random()*3);
+                    seq = seq.map(n => n + shift*7);
+                    answer = 25 + shift*7;
+                }
+            } else {
+                const t = Math.floor(Math.random()*3);
+                if (t === 0) {
+                    seq = [1, 1, 2, 3]; answer = 5;
+                } else if (t === 1) {
+                    seq = [2, 3, 5, 7]; answer = 11;
+                } else {
+                    seq = [1, 8, 27, 64]; answer = 125;
+                }
+            }
+            const d = document.getElementById('seqDisplay');
+            d.innerHTML = '';
+            seq.forEach(n => {
+                const el = document.createElement('div');
+                el.className = 'w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-b from-purple-200 to-purple-300 border-4 border-white rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-purple-900 shadow-md';
+                el.textContent = n; d.appendChild(el);
+            });
+            const q = document.createElement('div');
+            q.className = 'w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-b from-pink-300 to-pink-400 border-4 border-white rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-white shadow-md seq-fade';
+            q.textContent = '?'; d.appendChild(q);
+
+            const choices = new Set([answer]);
+            while (choices.size < 4) {
+                const off = Math.floor(Math.random()*11) - 5;
+                const n = answer + off;
+                if (n > 0 && n !== answer) choices.add(n);
+            }
+            const ch = document.getElementById('seqChoices');
+            ch.innerHTML = '';
+            [...choices].sort(() => Math.random()-0.5).forEach(n => {
+                const btn = document.createElement('button');
+                btn.className = 'kid-btn w-full py-3 bg-gradient-to-b from-purple-300 to-purple-400 border-4 border-white rounded-2xl text-xl sm:text-2xl font-black text-white shadow-lg';
+                btn.textContent = n;
+                btn.onclick = (e) => {
+                    if (n === answer) {
+                        seqScore++;
+                        document.getElementById('seqProgress').textContent = `${seqScore}/6`;
+                        spawnSparkleBurst(e.clientX, e.clientY, 12);
+                        playHarpNote(880, 0.3, 0.18);
+                        nextSeqQuestion();
+                    } else {
+                        btn.classList.add('shake-gentle');
+                        setTimeout(() => btn.classList.remove('shake-gentle'), 500);
+                        playGentleRetry(); handleRetry();
+                    }
+                };
+                ch.appendChild(btn);
+            });
+        }
+
+        /**************************************************************
+         * GAME 3: SIMON
+         **************************************************************/
+        let simonSequence = [];
+        let simonPlayerIdx = 0;
+        let simonAccepting = false;
+
+        function startSimonGame() {
+            simonSequence = [];
+            document.getElementById('simonStatus').textContent = 'استعدي...';
+            setTimeout(() => nextSimonRound(), 800);
+        }
+        function nextSimonRound() {
+            simonSequence.push(Math.floor(Math.random()*4));
+            simonPlayerIdx = 0;
+            simonAccepting = false;
+            document.getElementById('simonStatus').textContent = `المستوى ${simonSequence.length} - راقبي!`;
+            setTimeout(() => playSimonSequence(), 700);
+        }
+        function playSimonSequence() {
+            let i = 0;
+            const int = setInterval(() => {
+                if (i >= simonSequence.length) {
+                    clearInterval(int);
+                    simonAccepting = true;
+                    document.getElementById('simonStatus').textContent = `دورك! كرري ${simonSequence.length} نغمات`;
+                    return;
+                }
+                flashPad(simonSequence[i]); i++;
+            }, 600);
+        }
+        function flashPad(idx) {
+            const pad = document.querySelector(`[data-pad="${idx}"]`);
+            if (!pad) return;
+            pad.classList.add('pad-active');
+            playHarpNote([392, 523.25, 659.25, 783.99][idx], 0.3, 0.25);
+            setTimeout(() => pad.classList.remove('pad-active'), 350);
+        }
+        function handlePadClick(idx) {
+            if (!simonAccepting) return;
+            flashPad(idx);
+            if (idx === simonSequence[simonPlayerIdx]) {
+                simonPlayerIdx++;
+                if (simonPlayerIdx === simonSequence.length) {
+                    simonAccepting = false;
+                    if (simonSequence.length >= 8) {
+                        setTimeout(() => triggerWinCelebration('win'), 400);
+                    } else {
+                        document.getElementById('simonStatus').textContent = '✓ صح! جاي المستوى اللي بعده...';
+                        setTimeout(() => nextSimonRound(), 1100);
+                    }
+                }
+            } else {
+                simonAccepting = false;
+                playGentleRetry();
+                document.getElementById('simonStatus').textContent = '❌ أوبس! هنعيد من الأول';
+                setTimeout(() => {
+                    simonSequence = [];
+                    nextSimonRound();
+                }, 1500);
+            }
+        }
+
+        /**************************************************************
+         * GAME 4: MISSING NUMBER
+         **************************************************************/
+        let missLevel = 1, missScore = 0;
+
+        function startMissingGame(level) {
+            missLevel = level; missScore = 0;
+            document.getElementById('missProgress').textContent = '0/5';
+            nextMissingQuestion();
+        }
+        function nextMissingQuestion() {
+            if (missScore >= 5) { triggerWinCelebration('win'); return; }
+            // Pattern: rows follow arithmetic progression
+            let grid = [], answer;
+            if (missLevel === 1) {
+                const start = 1 + Math.floor(Math.random()*5);
+                const step = 1 + Math.floor(Math.random()*3);
+                grid = [start, start+step, start+2*step, start+3*step, start+4*step, start+5*step, start+6*step, start+7*step, start+8*step];
+                answer = start + 8*step;
+            } else if (missLevel === 2) {
+                const a = 1 + Math.floor(Math.random()*5);
+                const b = 2 + Math.floor(Math.random()*5);
+                grid = [a, a+b, a+2*b, a+3*b, a+4*b, a+5*b, a+6*b, a+7*b, a+8*b];
+                answer = a + 8*b;
+            } else {
+                const a = 1 + Math.floor(Math.random()*4);
+                const b = 2 + Math.floor(Math.random()*4);
+                grid = [a, a+b, a+b*2, a*2+b, a*2+b*2, a*2+b*3, a*3+b, a*3+b*2, a*3+b*3];
+                answer = a*3 + b*3;
+            }
+            // randomly pick which cell is missing (last one)
+            const missIdx = Math.floor(Math.random()*9);
+            answer = grid[missIdx];
+            const g = document.getElementById('missingGrid');
+            g.innerHTML = '';
+            grid.forEach((n, i) => {
+                const cell = document.createElement('div');
+                if (i === missIdx) {
+                    cell.className = 'w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-b from-pink-300 to-pink-400 border-4 border-white rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-white shadow-md seq-fade';
+                    cell.textContent = '?';
+                } else {
+                    cell.className = 'w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-b from-emerald-100 to-emerald-200 border-4 border-white rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-emerald-800 shadow-sm';
+                    cell.textContent = n;
+                }
+                g.appendChild(cell);
+            });
+            const choices = new Set([answer]);
+            while (choices.size < 4) {
+                const off = Math.floor(Math.random()*11) - 5;
+                const n = answer + off;
+                if (n > 0 && n !== answer) choices.add(n);
+            }
+            const ch = document.getElementById('missChoices');
+            ch.innerHTML = '';
+            [...choices].sort(() => Math.random()-0.5).forEach(n => {
+                const btn = document.createElement('button');
+                btn.className = 'kid-btn w-full py-3 bg-gradient-to-b from-emerald-300 to-emerald-500 border-4 border-white rounded-2xl text-xl font-black text-white shadow-lg';
+                btn.textContent = n;
+                btn.onclick = (e) => {
+                    if (n === answer) {
+                        missScore++;
+                        document.getElementById('missProgress').textContent = `${missScore}/5`;
+                        spawnSparkleBurst(e.clientX, e.clientY, 12);
+                        playHarpNote(880, 0.3, 0.18);
+                        nextMissingQuestion();
+                    } else {
+                        btn.classList.add('shake-gentle');
+                        setTimeout(() => btn.classList.remove('shake-gentle'), 500);
+                        playGentleRetry(); handleRetry();
+                    }
+                };
+                ch.appendChild(btn);
+            });
+        }
+
+        /**************************************************************
+         * GAME 5: WORD SCRAMBLE
+         **************************************************************/
+        const WORDS = {
+            1: ['قمر', 'شمس', 'كتاب', 'باب', 'ورد', 'بحر', 'نور', 'سماء'],
+            2: ['مدرسة', 'مكتبة', 'سماء', 'حديقة', 'شجرة', 'عصفور', 'نجمة', 'قطار'],
+            3: ['مستشفى', 'جامعة', 'مهندس', 'استقلال', 'موسيقى', 'مسطرة', 'كمبيوتر', 'مفتاح']
+        };
+        let wordLevel = 1, wordScore = 0;
+        let currentWord = '';
+        let currentLetters = [];
+        let answerLetters = [];
+
+        function startWordGame(level) {
+            wordLevel = level; wordScore = 0;
+            document.getElementById('wordProgress').textContent = '0/5';
+            nextWord();
+        }
+        function nextWord() {
+            if (wordScore >= 5) { triggerWinCelebration('win'); return; }
+            const pool = WORDS[wordLevel];
+            currentWord = pool[Math.floor(Math.random()*pool.length)];
+            currentLetters = Array.from(currentWord);
+            answerLetters = [];
+            renderWordTiles();
+        }
+        function renderWordTiles() {
+            const tilesEl = document.getElementById('wordLetterTiles');
+            const slotsEl = document.getElementById('wordAnswerSlots');
+            tilesEl.innerHTML = '';
+            slotsEl.innerHTML = '';
+            // Shuffle copies
+            const shuffled = [...currentLetters].map((ch, i) => ({ ch, id: i })).sort(() => Math.random()-0.5);
+            shuffled.forEach(({ch, id}) => {
+                const b = document.createElement('button');
+                b.className = 'letter-tile kid-btn w-11 h-11 sm:w-12 sm:h-12 bg-gradient-to-b from-amber-300 to-amber-400 border-4 border-white rounded-xl text-xl font-black text-white shadow-md';
+                b.textContent = ch;
+                b.dataset.letterId = id;
+                b.onclick = () => pickLetter(b);
+                tilesEl.appendChild(b);
+            });
+            currentLetters.forEach((_, i) => {
+                const s = document.createElement('div');
+                s.className = 'slot w-10 h-10 sm:w-11 sm:h-11 border-2 border-dashed border-amber-400 rounded-lg flex items-center justify-center text-lg font-black text-amber-800 bg-white/70';
+                s.dataset.slotIdx = i;
+                slotsEl.appendChild(s);
+            });
+        }
+        function pickLetter(btn) {
+            if (btn.disabled) return;
+            if (answerLetters.length >= currentLetters.length) return;
+            const letter = btn.textContent;
+            const id = btn.dataset.letterId;
+            answerLetters.push({ ch: letter, id });
+            btn.disabled = true; btn.classList.add('opacity-30');
+            const slots = document.querySelectorAll('#wordAnswerSlots .slot');
+            const s = slots[answerLetters.length - 1];
+            s.textContent = letter;
+            s.classList.add('slot-filled');
+            playStepChime();
+        }
+        function clearWordAnswer() {
+            answerLetters = [];
+            renderWordTiles();
+        }
+        function checkWordAnswer() {
+            if (answerLetters.length !== currentLetters.length) {
+                playGentleRetry();
+                return;
+            }
+            const built = answerLetters.map(a => a.ch).join('');
+            if (built === currentWord) {
+                wordScore++;
+                document.getElementById('wordProgress').textContent = `${wordScore}/5`;
+                launchConfetti();
+                playWinFanfare();
+                setTimeout(() => nextWord(), 900);
+            } else {
+                playGentleRetry();
+                handleRetry();
+                const slots = document.querySelectorAll('#wordAnswerSlots .slot');
+                slots.forEach(s => s.classList.add('shake-gentle'));
+                setTimeout(() => {
+                    slots.forEach(s => s.classList.remove('shake-gentle'));
+                    clearWordAnswer();
+                }, 700);
+            }
+        }
+
+        /**************************************************************
+         * GAME 6: ODD ONE OUT
+         **************************************************************/
+        const ODD_SETS = [
+            { same: ['🍎','🍌','🍇','🍓','🍒','🍑'], odd: ['🐱','🐶','🦁','🐸'] },
+            { same: ['🐱','🐶','🐮','🐸','🐔'], odd: ['🍕','🍔','🌮'] },
+            { same: ['⭐','🌟','✨','💫'], odd: ['🌙','☀️'] },
+            { same: ['🌹','🌷','🌸','🌺'], odd: ['🌳','🌲'] },
+            { same: ['🚗','🚕','🚙','🚌'], odd: ['✈️','🚀'] },
+            { same: ['1','2','3','4','5'], odd: ['أ','ب','ج'] },
+            { same: ['📕','📗','📘','📙'], odd: ['📱','💻'] },
+            { same: ['⚽','🏀','🎾','🏐'], odd: ['🎸','🎹'] }
+        ];
+        let oddLevel = 1, oddScore = 0;
+
+        function startOddGame(level) {
+            oddLevel = level; oddScore = 0;
+            document.getElementById('oddProgress').textContent = '0/6';
+            nextOddQuestion();
+        }
+        function nextOddQuestion() {
+            if (oddScore >= 6) { triggerWinCelebration('win'); return; }
+            const set = ODD_SETS[Math.floor(Math.random()*ODD_SETS.length)];
+            const odd = set.odd[Math.floor(Math.random()*set.odd.length)];
+            let count = 4;
+            if (oddLevel === 1) count = 4;
+            else if (oddLevel === 2) count = 6;
+            else count = 9;
+            // Build list: same items + 1 odd
+            const items = [];
+            for (let i = 0; i < count - 1; i++) {
+                items.push({ emoji: set.same[i % set.same.length], odd: false });
+            }
+            items.push({ emoji: odd, odd: true });
+            items.sort(() => Math.random()-0.5);
+
+            const g = document.getElementById('oddGrid');
+            g.className = oddLevel === 3 ? 'grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-md place-items-center' : (oddLevel === 2 ? 'grid grid-cols-3 gap-3 w-full max-w-md place-items-center' : 'grid grid-cols-2 gap-3 w-full max-w-sm place-items-center');
+            g.innerHTML = '';
+            items.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'kid-btn w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-b from-rose-100 to-white border-4 border-rose-400 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl shadow-lg';
+                btn.textContent = item.emoji;
+                btn.onclick = (e) => {
+                    if (item.odd) {
+                        oddScore++;
+                        document.getElementById('oddProgress').textContent = `${oddScore}/6`;
+                        spawnSparkleBurst(e.clientX, e.clientY, 15);
+                        playHarpNote(880, 0.3, 0.18);
+                        setTimeout(() => nextOddQuestion(), 400);
+                    } else {
+                        btn.classList.add('shake-gentle');
+                        setTimeout(() => btn.classList.remove('shake-gentle'), 500);
+                        playGentleRetry(); handleRetry();
+                    }
+                };
+                g.appendChild(btn);
+            });
+        }
+
+        /**************************************************************
+         * GAME 7: RIDDLES
+         **************************************************************/
+        const RIDDLES = [
+            { q: 'شيء له أسنان كثيرة لكنه لا يعض، ما هو؟', a: 'المشط', opts: ['المشط', 'الأسد', 'التمساح', 'الكلب'] },
+            { q: 'كلما أخذت منه كبر، ما هو؟', a: 'الحفرة', opts: ['الحفرة', 'البالون', 'الشمس', 'الجبل'] },
+            { q: 'يمشي بلا رجلين ويبكي بلا عينين، ما هو؟', a: 'السحاب', opts: ['السحاب', 'السيارة', 'الطائر', 'الماء'] },
+            { q: 'شيء يسمع بلا أذن ويتكلم بلا لسان، ما هو؟', a: 'الهاتف', opts: ['الهاتف', 'المرآة', 'الباب', 'الكرسي'] },
+            { q: 'له عين ولا يرى، ما هو؟', a: 'الإبرة', opts: ['الإبرة', 'الباب', 'الشمس', 'العاصفة'] },
+            { q: 'بيت بلا أبواب ولا نوافذ، ما هو؟', a: 'بيت الشعر', opts: ['بيت الشعر', 'الخيمة', 'القصر', 'الكهف'] },
+            { q: 'شيء إذا وضعته في الماء لا يبتل، ما هو؟', a: 'الظل', opts: ['الظل', 'الورق', 'الحديد', 'الخشب'] },
+            { q: 'بيضة على جدار، ما الذي يحدث؟', a: 'تقع وتنكسر', opts: ['تقع وتنكسر', 'تطير', 'تختفي', 'تكبر'] },
+            { q: 'شيء يزيد كلما نقص، ما هو؟', a: 'العمر', opts: ['العمر', 'المال', 'الماء', 'الهواء'] },
+            { q: 'أخوان لا يلتقيان أبداً، ما هما؟', a: 'الليل والنهار', opts: ['الليل والنهار', 'الشمس والقمر', 'اليمين واليسار', 'الأعلى والأسفل'] }
+        ];
+        let riddleScore = 0;
+        let riddlePool = [];
+
+        function startRiddleGame() {
+            riddleScore = 0;
+            riddlePool = [...RIDDLES].sort(() => Math.random()-0.5).slice(0, 5);
+            document.getElementById('riddleProgress').textContent = '0/5';
+            nextRiddle();
+        }
+        function nextRiddle() {
+            if (riddleScore >= 5) { triggerWinCelebration('win'); return; }
+            const r = riddlePool[riddleScore];
+            document.getElementById('riddleText').textContent = r.q;
+            const ch = document.getElementById('riddleChoices');
+            ch.innerHTML = '';
+            [...r.opts].sort(() => Math.random()-0.5).forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'kid-btn w-full py-3 bg-gradient-to-b from-cyan-300 to-cyan-500 border-4 border-white rounded-2xl text-sm sm:text-base font-black text-white shadow-lg';
+                btn.textContent = opt;
+                btn.onclick = (e) => {
+                    if (opt === r.a) {
+                        riddleScore++;
+                        document.getElementById('riddleProgress').textContent = `${riddleScore}/5`;
+                        spawnSparkleBurst(e.clientX, e.clientY, 15);
+                        playHarpNote(880, 0.3, 0.18);
+                        setTimeout(() => nextRiddle(), 500);
+                    } else {
+                        btn.classList.add('shake-gentle');
+                        setTimeout(() => btn.classList.remove('shake-gentle'), 500);
+                        playGentleRetry(); handleRetry();
+                    }
+                };
+                ch.appendChild(btn);
+            });
+        }
+
+        /**************************************************************
+         * GAME 8: EQUATION (missing operator)
+         **************************************************************/
+        let eqLevel = 1, eqScore = 0;
+
+        function startEqGame(level) {
+            eqLevel = level; eqScore = 0;
+            document.getElementById('eqProgress').textContent = '0/6';
+            nextEqQuestion();
+        }
+        function nextEqQuestion() {
+            if (eqScore >= 6) { triggerWinCelebration('win'); return; }
+            // Generate a valid equation with operator missing
+            let a, b, c, op;
+            const ops = ['+', '−', '×', '÷'];
+            if (eqLevel === 1) {
+                const type = Math.random();
+                if (type < 0.5) {
+                    a = 1 + Math.floor(Math.random()*10);
+                    b = 1 + Math.floor(Math.random()*10);
+                    c = a + b; op = '+';
+                } else {
+                    a = 2 + Math.floor(Math.random()*10);
+                    b = 1 + Math.floor(Math.random()*a);
+                    c = a - b; op = '−';
+                }
+            } else if (eqLevel === 2) {
+                const type = Math.random();
+                if (type < 0.5) {
+                    a = 2 + Math.floor(Math.random()*8);
+                    b = 2 + Math.floor(Math.random()*8);
+                    c = a * b; op = '×';
+                } else {
+                    b = 2 + Math.floor(Math.random()*8);
+                    c = 2 + Math.floor(Math.random()*8);
+                    a = b * c; op = '÷';
+                }
+            } else {
+                const type = Math.floor(Math.random()*4);
+                if (type === 0) { a = 20 + Math.floor(Math.random()*60); b = 10 + Math.floor(Math.random()*40); c = a+b; op='+'; }
+                else if (type === 1) { a = 30 + Math.floor(Math.random()*60); b = 5 + Math.floor(Math.random()*25); c = a-b; op='−'; }
+                else if (type === 2) { a = 4 + Math.floor(Math.random()*10); b = 4 + Math.floor(Math.random()*10); c = a*b; op='×'; }
+                else { b = 4 + Math.floor(Math.random()*10); c = 4 + Math.floor(Math.random()*10); a = b*c; op='÷'; }
+            }
+            const disp = document.getElementById('eqDisplay');
+            disp.innerHTML = `${a} <span class="text-pink-500">?</span> ${b} = ${c}`;
+            disp.classList.remove('seq-fade'); void disp.offsetWidth; disp.classList.add('seq-fade');
+            const ch = document.getElementById('eqChoices');
+            ch.innerHTML = '';
+            ops.forEach(o => {
+                const btn = document.createElement('button');
+                btn.className = 'kid-btn w-full py-4 bg-gradient-to-b from-indigo-300 to-indigo-500 border-4 border-white rounded-2xl text-2xl sm:text-3xl font-black text-white shadow-lg';
+                btn.textContent = o;
+                btn.onclick = (e) => {
+                    if (o === op) {
+                        eqScore++;
+                        document.getElementById('eqProgress').textContent = `${eqScore}/6`;
+                        spawnSparkleBurst(e.clientX, e.clientY, 12);
+                        playHarpNote(880, 0.3, 0.18);
+                        nextEqQuestion();
+                    } else {
+                        btn.classList.add('shake-gentle');
+                        setTimeout(() => btn.classList.remove('shake-gentle'), 500);
+                        playGentleRetry(); handleRetry();
+                    }
+                };
+                ch.appendChild(btn);
+            });
+        }
+
+        /**************************************************************
+         * RECORDING WIZARD (simplified)
+         **************************************************************/
+        let wizardStream = null, wizardRecorder = null, wizardChunks = [];
+        let wizardTimerInterval = null, wizardRecordStart = 0;
+        let wizardPendingBlob = null, wizardPhrases = [], wizardIndex = 0, wizardRecordings = {};
+
+        function buildWizardPhrases() {
+            wizardPhrases = [];
+            PHRASE_GROUPS.forEach(g => {
+                g.keys.forEach(k => {
+                    if (PHRASES[k]) wizardPhrases.push({ key: k, text: PHRASES[k], group: g.name });
+                });
+            });
+        }
+        function openWizard() {
+            document.getElementById('recordWizard').classList.remove('hidden');
+            buildWizardPhrases();
+            document.getElementById('wizIntro').classList.remove('hidden');
+            document.getElementById('wizMain').classList.add('hidden');
+            document.getElementById('wizDone').classList.add('hidden');
+            document.getElementById('micError').classList.add('hidden');
+            document.getElementById('startMicBtn').disabled = false;
+            document.getElementById('startMicBtn').textContent = '🎤 ابدأي التسجيل';
+            refreshVoiceList();
+        }
+        function closeWizard() {
+            if (wizardRecorder && wizardRecorder.state === 'recording') try { wizardRecorder.stop(); } catch(e) {}
+            if (wizardStream) { wizardStream.getTracks().forEach(t => t.stop()); wizardStream = null; }
+            clearInterval(wizardTimerInterval);
+            document.getElementById('recordWizard').classList.add('hidden');
+            document.getElementById('wizTimer').classList.add('hidden');
+        }
+        function pickMimeType() {
+            const types = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4','audio/mpeg'];
+            for (const t of types) if (window.MediaRecorder && MediaRecorder.isTypeSupported(t)) return t;
+            return '';
+        }
+        async function initMicAndStart() {
+            const errEl = document.getElementById('micError');
+            errEl.classList.add('hidden');
+            const btn = document.getElementById('startMicBtn');
+            btn.disabled = true; btn.textContent = '⏳ طلب إذن...';
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                errEl.innerHTML = '⚠️ المتصفح لا يدعم التسجيل. جربي Chrome حديث.';
+                errEl.classList.remove('hidden');
+                btn.disabled = false; btn.textContent = '🎤 ابدأي التسجيل';
+                return;
+            }
+            if (!window.MediaRecorder) {
+                errEl.innerHTML = '⚠️ المتصفح لا يدعم MediaRecorder.';
+                errEl.classList.remove('hidden');
+                btn.disabled = false; btn.textContent = '🎤 ابدأي التسجيل';
+                return;
+            }
+            try {
+                wizardStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                document.getElementById('wizIntro').classList.add('hidden');
+                document.getElementById('wizMain').classList.remove('hidden');
+                await loadWizardRecordings();
+                wizardIndex = 0;
+                renderWizard();
+            } catch(err) {
+                btn.disabled = false; btn.textContent = '🎤 ابدأي التسجيل';
+                let msg = '⚠️ ';
+                if (err.name === 'NotAllowedError') msg += '<b>تم رفض إذن المايك.</b><br>اضغطي أيقونة 🔒 في شريط العنوان واسمحي بالمايك.';
+                else if (err.name === 'NotFoundError') msg += '<b>لم يتم العثور على مايك.</b>';
+                else if (err.name === 'NotReadableError') msg += '<b>المايك مشغول.</b> اقفلي التطبيقات الأخرى.';
+                else msg += '<b>خطأ:</b> ' + (err.message || err.name);
+                errEl.innerHTML = msg;
+                errEl.classList.remove('hidden');
+            }
+        }
+        async function loadWizardRecordings() {
+            try { wizardRecordings = await dbGetAll(); } catch(e) { wizardRecordings = {}; }
+        }
+        function renderWizard() {
+            const p = wizardPhrases[wizardIndex];
+            if (!p) return;
+            document.getElementById('wizNum').textContent = wizardIndex + 1;
+            document.getElementById('wizTotal').textContent = wizardPhrases.length;
+            document.getElementById('wizPhrase').textContent = p.text;
+            const recorded = Object.keys(wizardRecordings).filter(k => PHRASES[k]).length;
+            document.getElementById('wizProgress').style.width = (recorded / wizardPhrases.length * 100) + '%';
+            document.getElementById('wizDone').textContent = `${recorded} / ${wizardPhrases.length} مسجل`;
+            const isRecorded = !!wizardRecordings[p.key];
+            const statusEl = document.getElementById('wizStatus');
+            const playBtn = document.getElementById('wizPlayBtn');
+            const recBtn = document.getElementById('wizRecordBtn');
+            const saveBtn = document.getElementById('wizSaveBtn');
+            if (isRecorded) {
+                statusEl.textContent = '✓ مسجلة - اسمعيها بالزر الأزرق';
+                statusEl.className = 'text-center mt-2 text-xs font-bold text-emerald-600';
+                playBtn.disabled = false;
+                recBtn.textContent = '🔄 إعادة';
+            } else {
+                statusEl.textContent = 'لم تُسجّل بعد - هتستخدم الصوت الافتراضي';
+                statusEl.className = 'text-center mt-2 text-xs font-bold text-amber-600';
+                playBtn.disabled = true;
+                recBtn.textContent = '🎙️ ابدئي';
+            }
+            saveBtn.classList.add('hidden');
+            document.getElementById('wizTimer').classList.add('hidden');
+            wizardPendingBlob = null;
+        }
+        function toggleWizardRecording() {
+            if (wizardRecorder && wizardRecorder.state === 'recording') stopWizardRecording();
+            else startWizardRecording();
+        }
+        function startWizardRecording() {
+            if (!wizardStream) { alert('المايك مش جاهز'); return; }
+            const p = wizardPhrases[wizardIndex];
+            if (!p) return;
+            wizardChunks = [];
+            const mimeType = pickMimeType();
+            try { wizardRecorder = new MediaRecorder(wizardStream, mimeType ? { mimeType } : {}); }
+            catch(e) { wizardRecorder = new MediaRecorder(wizardStream); }
+            wizardRecorder.ondataavailable = e => { if (e.data.size > 0) wizardChunks.push(e.data); };
+            wizardRecorder.onstop = () => {
+                clearInterval(wizardTimerInterval);
+                document.getElementById('wizTimer').classList.add('hidden');
+                const type = (wizardRecorder && wizardRecorder.mimeType) || 'audio/webm';
+                const blob = new Blob(wizardChunks, { type });
+                wizardChunks = [];
+                if (blob.size < 800) {
+                    alert('التسجيل قصير أو فاضي. جربي تاني.');
+                    document.getElementById('wizRecordBtn').textContent = '🎙️ ابدئي';
+                    return;
+                }
+                wizardPendingBlob = blob;
+                try {
+                    const url = URL.createObjectURL(blob);
+                    const audio = new Audio(url);
+                    audio.onended = () => URL.revokeObjectURL(url);
+                    audio.onerror = () => URL.revokeObjectURL(url);
+                    audio.play().catch(() => {});
+                } catch(e) {}
+                document.getElementById('wizSaveBtn').classList.remove('hidden');
+                document.getElementById('wizRecordBtn').textContent = '🔄 إعادة';
+                document.getElementById('wizStatus').textContent = '✓ اتسجلت! احفظي';
+                document.getElementById('wizStatus').className = 'text-center mt-2 text-xs font-bold text-emerald-600';
+                document.getElementById('wizPlayBtn').disabled = false;
+            };
+            try { wizardRecorder.start(); } catch(e) { alert('مش قادر أبدأ: ' + e.message); return; }
+            wizardRecordStart = Date.now();
+            document.getElementById('wizRecordBtn').textContent = '⏹️ وقفي';
+            document.getElementById('wizRecordBtn').className = 'flex-1 kid-btn bg-gradient-to-r from-red-600 to-red-700 text-white py-3 rounded-2xl font-black text-sm recording-active';
+            document.getElementById('wizTimer').classList.remove('hidden');
+            document.getElementById('wizSaveBtn').classList.add('hidden');
+            document.getElementById('wizStatus').textContent = '🔴 جاري التسجيل... اقري';
+            wizardTimerInterval = setInterval(() => {
+                const sec = ((Date.now() - wizardRecordStart)/1000).toFixed(1);
+                document.getElementById('wizTimer').textContent = `⏺️ ${sec} ث`;
+                if (Date.now() - wizardRecordStart > 15000) stopWizardRecording();
+            }, 100);
+        }
+        function stopWizardRecording() {
+            if (wizardRecorder && wizardRecorder.state === 'recording') {
+                try { wizardRecorder.stop(); } catch(e) {}
+            }
+        }
+        function playWizardRecording() {
+            const p = wizardPhrases[wizardIndex];
+            if (!p) return;
+            const blob = wizardPendingBlob || wizardRecordings[p.key];
+            if (!blob) return;
+            try {
+                const url = URL.createObjectURL(blob);
+                const audio = new Audio(url);
+                audio.onended = () => URL.revokeObjectURL(url);
+                audio.onerror = () => URL.revokeObjectURL(url);
+                audio.play().catch(() => {});
+            } catch(e) {}
+        }
+        async function wizSaveAndNext() {
+            if (!wizardPendingBlob) return;
+            const p = wizardPhrases[wizardIndex];
+            const saveBtn = document.getElementById('wizSaveBtn');
+            saveBtn.disabled = true; saveBtn.textContent = '⏳ جاري الحفظ...';
+            try {
+                await dbSave(p.key, wizardPendingBlob);
+                wizardRecordings[p.key] = wizardPendingBlob;
+                if (audioCache[p.key]) URL.revokeObjectURL(audioCache[p.key]);
+                audioCache[p.key] = URL.createObjectURL(wizardPendingBlob);
+            } catch(e) {
+                alert('خطأ في الحفظ: ' + e.message);
+                saveBtn.disabled = false; saveBtn.textContent = '✓ احفظي';
+                return;
+            }
+            saveBtn.disabled = false; saveBtn.textContent = '✓ احفظي';
+            wizardPendingBlob = null;
+            if (wizardIndex < wizardPhrases.length - 1) { wizardIndex++; renderWizard(); }
+            else showWizardDone();
+        }
+        function wizSkip() {
+            wizardPendingBlob = null;
+            if (wizardIndex < wizardPhrases.length - 1) { wizardIndex++; renderWizard(); }
+            else showWizardDone();
+        }
+        function wizPrev() {
+            if (wizardIndex > 0) { wizardIndex--; renderWizard(); }
+        }
+        function showWizardDone() {
+            document.getElementById('wizMain').classList.add('hidden');
+            document.getElementById('wizDone').classList.remove('hidden');
+            const count = Object.keys(wizardRecordings).filter(k => PHRASES[k]).length;
+            document.getElementById('wizDoneMsg').textContent = `سجلتي ${count} جملة من ${wizardPhrases.length}. الباقي بالصوت الافتراضي. تقدري ترجعي في أي وقت.`;
+        }
+        async function clearAllRecordings() {
+            if (!confirm('⚠️ حذف كل التسجيلات؟')) return;
+            try {
+                await dbClearAll();
+                for (const k in audioCache) try { URL.revokeObjectURL(audioCache[k]); } catch(e) {}
+                audioCache = {}; wizardRecordings = {};
+                alert('✓ تم الحذف');
+                if (!document.getElementById('wizMain').classList.contains('hidden')) { wizardIndex = 0; renderWizard(); }
+            } catch(e) { alert('خطأ: ' + e.message); }
+        }
+        async function exportRecordings() {
+            try {
+                const all = await dbGetAll();
+                const exportData = {};
+                for (const [key, blob] of Object.entries(all)) {
+                    if (!blob) continue;
+                    exportData[key] = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.readAsDataURL(blob);
+                    });
+                }
+                const json = JSON.stringify({ version: 2, date: new Date().toISOString(), phrases: PHRASES, recordings: exportData });
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = `helen-voice-${Date.now()}.json`; a.click();
+                URL.revokeObjectURL(url);
+            } catch(e) { alert('خطأ: ' + e.message); }
+        }
+        function importRecordings() {
+            const input = document.createElement('input');
+            input.type = 'file'; input.accept = '.json,application/json';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                try {
+                    const data = JSON.parse(await file.text());
+                    if (!data.recordings) throw new Error('ملف غير صالح');
+                    let count = 0;
+                    for (const [key, base64] of Object.entries(data.recordings)) {
+                        const blob = await (await fetch(base64)).blob();
+                        await dbSave(key, blob);
+                        if (audioCache[key]) URL.revokeObjectURL(audioCache[key]);
+                        audioCache[key] = URL.createObjectURL(blob);
+                        count++;
+                    }
+                    alert(`✓ تم استرجاع ${count} تسجيل`);
+                    if (!document.getElementById('wizMain').classList.contains('hidden')) {
+                        await loadWizardRecordings(); renderWizard();
+                    }
+                } catch(err) { alert('خطأ: ' + err.message); }
+            };
+            input.click();
+        }
+
+        /**************************************************************
+         * BOOT
+         **************************************************************/
+        window.addEventListener('load', async () => {
+            updateStarUI();
+            refreshVoiceList();
+            await loadAudioCache();
+        });
+    </script>
+</body>
+</html>
